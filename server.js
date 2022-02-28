@@ -1,4 +1,5 @@
 const express = require("express");
+const fs = require("fs"); //for writing to json file
 const data = require("./database.json");
 const app = express();
 
@@ -86,10 +87,14 @@ app.post("/api/users", checkUser, (req, res) => {
 app.put("/api/users/:id", checkUser, (req, res) => {
 
     let id = req.params.id;
+    let password = req.params.password;
     let body = req.body;
-    
+
     data.users.map((user, index) => {
         if(user.id == id){
+            body.id = Number(id);
+            if(body.password == undefined) //if update by employee, password shell not changed
+                body.password = user.password;
             data.users[index] = body;
         }
     })
@@ -138,5 +143,11 @@ function get_supliers(){return data.supplier;}
 function get_all_users(){return data.users}
 
 function updateJsonFile(){
-
+    fs.writeFile("database.json", JSON.stringify(data), err => {
+     
+        // Checking for errors
+        if (err) throw err; 
+       
+        console.log("Done writing"); // Success
+    });
 }

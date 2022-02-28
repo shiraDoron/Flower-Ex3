@@ -187,6 +187,12 @@ body {
     visibility: visible;
   }
 
+  .responsive{
+    width: 100%;
+    max-width: 100;
+    height: auto;
+  }
+
   @keyframes slide {
     0% {
       opacity: 0;

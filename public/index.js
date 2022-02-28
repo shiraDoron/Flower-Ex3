@@ -184,7 +184,7 @@ const loadCatalog = async () => {
         <h1 id="flower_name">${flower.name}</h1>
       </div>
     <div class="panel-body">
-      <img id="image" src=${flower.image} alt="Basic pic" style="width:346px;height:200px;">
+      <img id="image" class="responsive" src=${flower.image} alt="Basic pic" style="width:346px;height:200px;">
         <p id="color" class=h5>Color: ${flower.color}</p>
         <p id="description" class=h5>Description: ${flower.description}</p>
     </div>
@@ -198,8 +198,8 @@ const loadCatalog = async () => {
 
   document.getElementById("flowerlist").innerHTML = html;
 
-  if(json.success) backDropClose();
-  
+  if (json.success) backDropClose();
+
 }
 
 const loadUsers = async (_add = false) => {
@@ -215,8 +215,8 @@ const loadUsers = async (_add = false) => {
     users = json.data;
   }
 
-  let html = ""  
-   
+  let html = ""
+
   if (_add) {
     html += `
     <tr>
@@ -242,16 +242,16 @@ const loadUsers = async (_add = false) => {
     <td>${user.mail}</td>
     <td>${user.username}</td>
     ${USER_TYPE == "manager"
-    ? `<td>${user.password}</td>`
-    : "<td></td>"}
+      ? `<td>${user.password}</td>`
+      : "<td></td>"}
     
     <td>${user.phone}</td>
     <td >${user.category}</td>
     <td>  
         <a class="edit" title="Edit" onclick="toggleEdit('${user.id}');"><i class="material-icons">&#xE254;</i></a>
         ${USER_TYPE == "manager"
-          ? `<a class="delete" title="Delete" onclick="deleteUser('${user.id}');"><i class="material-icons">&#xE872;</i></a>`
-          : ""}
+      ? `<a class="delete" title="Delete" onclick="deleteUser('${user.id}');"><i class="material-icons">&#xE872;</i></a>`
+      : ""}
     </td>
    </tr>
    
@@ -278,12 +278,13 @@ const loadUsers = async (_add = false) => {
 
   document.getElementById("tbusers").innerHTML = html;
 
-  if(json.success) backDropClose();
+  if (json.success) backDropClose();
 
 }
 
 const saveUser = async () => {
 
+  backDropOpen();
   let name = $('#name_adduser').val();
   let mail = $('#mail_adduser').val();
   let username = $('#username_adduser').val();
@@ -307,6 +308,7 @@ const saveUser = async () => {
   let json = await res.json();
 
   if (json.success) {
+    backDropClose();
     loadUsers();
     return;
   }
@@ -324,6 +326,7 @@ const toggleEdit = (_id) => {
 
 const updateUser = async (_id) => {
 
+  backDropOpen();
   let name = $('#name_' + _id).val();
   let mail = $('#mail_' + _id).val();
   let username = $('#username_' + _id).val();
@@ -345,8 +348,8 @@ const updateUser = async (_id) => {
   });
 
   let json = await res.json();
-  console.log(json);
   if (json.success) {
+    backDropClose();
     loadUsers();
     return;
   }
@@ -356,6 +359,7 @@ const updateUser = async (_id) => {
 
 const deleteUser = async (_id) => {
 
+  backDropOpen();
   let res = await fetch(`${BASE_URL}api/users/${_id}?user=${USER_NAME}`, {
     headers: {
       'Accept': 'application/json',
@@ -367,6 +371,7 @@ const deleteUser = async (_id) => {
   let json = await res.json();
 
   if (json.success) {
+    backDropClose();
     loadUsers();
     return;
   }
@@ -386,8 +391,8 @@ const goToPage = (_page) => {
 }
 
 const backDropOpen = () => {
-    document.getElementById("backdrop").style.display = "block";
-    document.querySelector("body").style.overflow = "hidden";
+  document.getElementById("backdrop").style.display = "block";
+  document.querySelector("body").style.overflow = "hidden";
 }
 
 const backDropClose = () => {
